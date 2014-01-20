@@ -1,0 +1,125 @@
+
+
+# All rulefiles have to have at least 2 variables: NUMCPUS and RULES
+# rulefiles are standard python files, so you can use variables and all other expressions.
+# NUMCPUS defines how many instances of the pypy interpreter do we want to run.
+# Usually, set this to your liking, depending on how many free cores you have.
+# We will set this to 1 so you can see how the rules get executed and how the system creates
+# the output:
+NUMCPUS = 1
+
+# unhash rulefiles are standard python files, you can use all python expressions like
+# imports, execfile, variables, loops, arrays...
+# special characters like f,r,u,g,gl,l,s are already assigned in the main script, so
+# you don't have to write 'f' but just f.
+# Also, you can use all tags in a single dictionary, so you can create arbitraly complex rules.
+import string
+
+# A RULES variable is a array containing rules that describe how the unhash tool should work.
+# Each rule is described as an array of dictionaries, where each dictionary is a job definition.
+#
+RULES = [
+# Our first example is using a simple file, to do a wordlist attack.
+# So, we will add a list containing one dictionary file.
+# The syntax is as follows, f values point to files we want to just dump to stdout
+[{f:'keywords.txt'}],
+
+# Let's combine two dictionaries to perform a Cartesian product.
+# This is useful if we have a dictionary of numbers and a wordlist and we want to append
+# or perpend the dictionary. We can add multiple statements in a array and they will be
+# joined with a Cartesian product.
+# For example, let's join all combinations in the dictionary keywords.txt with all combinations
+# from the keywords dictionary. We can do this like this:
+[{f:'keywords.txt'},{f:'keywords.txt'}],
+
+# If we want to add a space or any other string that is fixed between the two joins, we just add a string
+# For instance, here we want the two dictionary combinations to be divided by a space:
+[{f:'keywords.txt'},' ',{f:'keywords.txt'}],
+
+# Let's try to add a ! on the end of every dictionary word:
+[{f:'keywords.txt'},'!'],
+
+# Let's try to prepend a ! before every dictionary word, and apped 'ed':
+['!',{f:'keywords.txt'},'ed'],
+
+
+# Lets add another rule, we just add a new element into the array.
+# If we want to uppercase the first letter, we can add the tag u, that will
+# uppercase the indexes we specified, the u tag is a python standard array
+# and it recognizes all python expressions like [0,1,2] or [-1,-2,-3] or range(0,100)[::2]
+# Also, u recognizes the special statement 'ALL' to uppercase all characters.
+[{f:'keywords.txt', u:[0]}],
+# Lets try the u:'ALL' statement
+[{f:'keywords.txt', u:'ALL'}],
+# Lets try to uppercase the first 2 characters:
+[{f:'keywords.txt', u:[0,1]}],
+# Lets try to uppercase every second character:
+[{f:'keywords.txt', u:range(0,100)[::2]}],
+
+# You can slice the output from the wordlist, for example, lets just get the first two characters
+# from the wordlist keywords.txt. We can use the tag s (slice) to do that.
+# To just slice the first two characters, we can use
+[{f:'keywords.txt', s:[2] }],
+
+
+# Let's cut away the first two characters and leave the next 2.
+# This is equal to the python slice [2:4]
+[{f:'keywords.txt', s:[2,4] }],
+
+# s is the python slice interface, so you know you can use negative values
+# Lets cut away the last 3 characters from each wordlist word:
+[{f:'keywords.txt', s:[-3]}],
+
+# s is the python slice interface, so you know you can use negative values
+# Also, you can use [None,None,2] to access slice steps.
+# Lets cut away the last 3 characters from each wordlist word:
+[{f:'keywords.txt', s:[-3]}],
+
+# Lets leave the last 3 characters of a word only:
+[{f:'keywords.txt', s:[-3,None]}],
+
+# Lets reverse:
+[{f:'keywords.txt', s:[None,None,-1]}],
+
+
+# Lets get every other letter:
+[{f:'keywords.txt', s:[None,None,2]}],
+
+
+# For the third rule, we want to mutate our output. Let's replace 's' for '5' and 'o' for '0'
+# we can do this by passing a dictionary to the tag r
+[{f:'keywords.txt',r:{'s':'5','o':'0'}}],
+
+# We can also permutate all possible combinations of the mutation,
+# by adding the p tag to 1. For example:
+[{f:'keywords.txt',r:{'s':'5','o':'0'}, p:1}],
+
+# We can ignore output for replacements that can't be mutated by passing the i tag...
+# That way, if an line in the dictionary can't be mutated, we simply don't output it..
+# This is useful for slow hashes like scrypt/bcrypt and others, where we want to output
+# the least amount of hashes.
+[{f:'keywords.txt',r:{'s':'5','o':'0'}, i:1}],
+
+# You can specify bruteforcing with unhash. There are two tags for that: g and gl.
+# The g tag has to be combined with the l tag. The g tag can take a string or a list
+# If a string is passed, the string is treated as an alphabet to use with bruteforcing
+# If an array is passed, the bruteforcer will use each element from the array.
+# The l parameter defines the length of the combining.
+# For example, we want to bruteforce all combinations of the string 'abc' with the length 2:
+[{g:'abc',l:2}],
+
+# Lets try this one out with a list, remember, you can set your lists as variables in python
+# and define them above the RULES setting. You can even use execfile('name of file') to import
+# your variables and custom patterns. The lists are supported with g and with gl.
+[{g:['aa','bbb','cccc'],l:2}],
+
+# The gl tag is used to generate all possible combinations from length 1 to length l.
+[{gl:'abcd',l:2}],
+
+# Lets try something more complicated. Lets try to generate all combinations that:
+# Have ! or # as the first character, a word from the keywords.txt wordlist
+# where the first two characters are uppercase
+# a dot and have from 1 to 2 numbers from the range 01 as a suffix:
+[{g:'!#',l:1},{f:'keywords.txt', u:[0,1]},'.',{gl:'01',l:2}],
+
+]

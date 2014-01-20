@@ -1,0 +1,17 @@
+fullpath = './dictionaries/'
+weak_pattern= fullpath+'weak_patterns.txt'
+keyboard_pattern = fullpath+'keyboard_patterns.txt'
+word = fullpath+'words.txt'
+sequence = fullpath+'numbers.txt'
+string = fullpath+'strings.txt'
+
+NUMCPUS = 2
+
+RULES = [
+[{'f':keyboard_pattern}],
+[{'f':weak_pattern}],
+[{'f':word}],
+[{'f':sequence}],
+[{'f':string}],
+]
+
