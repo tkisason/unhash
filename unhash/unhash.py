@@ -151,6 +151,8 @@ def crack(pattern,NUMCPUS=2):
     i = 0
     pool = multiprocessing.Pool(processes=NUMCPUS,initializer=initw)
     pool.map(gen,pattern)
+    pool.close()
+    pool.join()
 
 if __name__ == '__main__':
     import argparse

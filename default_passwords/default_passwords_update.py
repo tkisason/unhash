@@ -27,7 +27,7 @@ def get_phenoelit_list():
             if line.find(el) >= 0:
                 add = 0
         if add == 1:
-            pwd_list[line] +=1
+            pwd_list[line] += 1
 
 def get_liquidmatrix_list():
     url = 'http://www.liquidmatrix.org/blog/default-passwords/'
@@ -52,7 +52,7 @@ def get_securityoverride_list():
     url = 'http://securityoverride.org/default-password-list/'
     data = requests.get(url).text
     soup = BeautifulSoup.BeautifulSoup(data)
-    table = soup.find("table",{'id':'sortedtable'})
+    table = soup.find("table",{'id':'sorttable'})
     for row in table.findAll('tr')[1:]: # skip th
         cells = row.findAll('td')
         username = cells[3].text
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     print '[+] Dumping lists to file' 
     for el in sorted_wl:
         if args.numbers:
-            wlfile.write( el[0].encode('utf-8')+'\t\t'+el[1]+'\n')
+            wlfile.write( el[0].encode('utf-8')+'\t\t'+str(el[1])+'\n')
         else:
             wlfile.write( el[0].encode('utf-8') + '\n' )
     print '[+] Done!'
