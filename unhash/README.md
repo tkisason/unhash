@@ -1,9 +1,9 @@
-# UNHash - rule based password cracker written for pypy
+### UNHash - rule based password cracker written for pypy
 ###### Tonimir Kišasondi (c) 2012 -
 
 _Protip_: SMP support in `pypy` cannot be interrupted with <kbd>CTRL</kbd>+<kbd>C</kbd>, use `./unhash rulefile | cat` to test the output.
 
-##Usage:
+#####Usage:
 
 ```bash
 pypy unhash.py rulefile | john --stdin ....
