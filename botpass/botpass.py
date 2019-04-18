@@ -9,9 +9,10 @@ import operator
 userpass = collections.defaultdict(int)
 ips = collections.defaultdict(int)
 
-PWD = open('botnet-userpass.log','w')
-PWDL = open('botnet-userpass-len.log','w')
-IPS = open('botnet-ipranges.log','w')
+PWD = open('botnet-userpass.log', 'w')
+PWDL = open('botnet-userpass-len.log', 'w')
+IPS = open('botnet-ipranges.log', 'w')
+
 
 def get_page(n=1):
     url = 'http://sshpot.com/api/ssh_logins.json?page='+str(n)
@@ -36,11 +37,12 @@ def collect_data():
                 ips[el['remote_addr']] += 1
     print '\n[+] done'
 
+
 def sort_userpass(item, sep=' '):
-    SORT = sorted(item.iteritems(), key=operator.itemgetter(1),reverse=True)
+    SORT = sorted(item.iteritems(), key=operator.itemgetter(1), reverse=True)
     for el in SORT:
         try:
-            PWDL.write(el[0][0]+sep+el[0][1]+sep+str(el[1])+'\n')
+            PWDL.write(el[0][0] + sep + el[0][1] + sep + str(el[1]) + '\n')
             PWD.write(el[0][0]+sep+el[0][1]+'\n')
         except:
             print '[!] skipping pair ', el[0]
@@ -49,15 +51,13 @@ def sort_userpass(item, sep=' '):
 
 
 def sort_ip(item, sep=' '):
-    SORT = sorted(item.iteritems(), key=operator.itemgetter(1),reverse=True)
+    SORT = sorted(item.iteritems(), key=operator.itemgetter(1), reverse=True)
     for el in SORT:
         try:
             IPS.write(el[0]+sep+str(el[1])+'\n')
         except:
             print '[!] skipping IP ', el[0]
     IPS.close()
-
-
 
 
 if __name__ == '__main__':

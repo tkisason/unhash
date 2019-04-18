@@ -3,11 +3,11 @@
 #helper definitions, makes it easy to use variables instead of full paths
 testfile = './unhash_dict_v01/testfile'
 
-keyboard_pattern = testfile 
+keyboard_pattern = testfile
 sequence = testfile
 string = testfile
 unknown = testfile
-weak_pattern= testfile
+weak_pattern = testfile
 word = testfile
 
 dictlen1 = testfile
