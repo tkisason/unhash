@@ -1,8 +1,6 @@
 UNHash toolset  
 Tools for better password analysis  
 
-Tonimir Kisasondi (c) 2012 -  
-
 Unhash toolset contains the following tools:
 default\_passwords
 ------------------
@@ -14,7 +12,7 @@ Botpass scrapes sshpot.com which collects data from ssh honeypots. This creates 
 
 gwordlist
 ---------
-Use google searches to create custom wordlists based on keywords you enter. Very useful for creating password lists based by scraping top n pages returned by google for each keyword and enhancing your chances of successful guessing.
+Use google searches to create custom wordlists based on keywords you enter. Very useful for creating password lists based by scraping top n pages returned by google for each keyword and enhancing your chances of successful guessing. NEW: Updated for python3, added docker support.
 
 unhash
 ------
